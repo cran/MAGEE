@@ -9,7 +9,7 @@
 ##         "foreach", "Matrix", "GMMAT", "BiocManager", "testthat"), 
 ## 	repos = "https://cran.r-project.org/")
 ## BiocManager::install(c("SeqArray", "SeqVarTools"))
-## devtools::install_github("https://github.com/xwang21/MAGEE")
+## devtools::install_github("https://github.com/large-scale-gxe-methods/MAGEE")
 
 
 ###################################################
