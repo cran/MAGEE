@@ -1,15 +1,15 @@
-bd7126f9f1babd84a1e0510f98a6ed81 *DESCRIPTION
+17cd2209ee4c4ab72fe02a9ae863e545 *DESCRIPTION
 29c827dcaa8f81848eeedd2a2dcd5e63 *NAMESPACE
-5c419deeda9b19f609d33ee704f3d71c *R/MAGEE.R
+c2e2c301d3557ba1c0becaeb62517660 *R/MAGEE.R
 339fbbc1b6e1b83512da742284e4125f *R/glmm.gei.R
-85b447ac565673630d949f60f3db46f9 *README.md
+d95ca6ef22e67ee826c6d2aa43d6eaa5 *README.md
 4120f169e9401dbfd12b88734567a18a *build/vignette.rds
 ddce269a1e3d054cae349621c198dd52 *data/datalist
 203af5bf589642fee477911c3868b29c *data/example.rda
-c0ce883cd0d78185fa50c3a09d1c50c8 *inst/COPYRIGHTS
+62848992094176845b79312bc026249e *inst/COPYRIGHTS
 c859b5366263ac42c4a7b4b5371bf50a *inst/doc/MAGEE.R
-de0c3f337269eb4bdc834e5d84c69c2f *inst/doc/MAGEE.Rnw
-575b364295062e054b79b1db0a4a1c87 *inst/doc/MAGEE.pdf
+e77782adc4145a04eedafeba232bff66 *inst/doc/MAGEE.Rnw
+ae35d0f69a5d7c64b92d3173e229f991 *inst/doc/MAGEE.pdf
 f7954989664703c2355f0b0d71c94bb7 *inst/extdata/GRM.txt.bz2
 c0284b1683014cf1e5216d54841137d0 *inst/extdata/SetID.singlevariant.txt
 f6cecfdbec46d056fb54dad6ff9ec63d *inst/extdata/SetID.withweights.txt
@@ -19,7 +19,7 @@ f6cecfdbec46d056fb54dad6ff9ec63d *inst/extdata/SetID.withweights.txt
 b6906ba2c3b88fb25ebe8c4492fb034e *inst/extdata/pheno.txt
 ed1a63ea04ec6b639d1fa5013362988e *inst/extdata/pheno2.txt
 edbb46acb22097d50ba6f659c29b3bb3 *inst/extdata/readme
-7d37718845379b07c0ccb5a86e27af98 *man/MAGEE-package.Rd
+4324f09d38a7258d37c937f4b23133db *man/MAGEE-package.Rd
 892575d996b139aadea47b44666202a0 *man/MAGEE.Rd
 f02f2f6484e4278c0bf6094e47b24ad9 *man/example.Rd
 699294da801ea4881cc6fe89d6ec8839 *man/glmm.gei.Rd
@@ -116,4 +116,4 @@ e7e5ea5ce30e89e736f933f856a05e55 *src/zstd-1.4.5/lib/zstd.h
 cc9f66fdc92816912784b1bcf7b05bc6 *tests/testthat.R
 9249dda7b82aa2832ab17fa20e06a473 *tests/testthat/test_MAGEE.R
 720c8b9fbee8041451772b9fefcefc3d *tests/testthat/test_glmm.gei.R
-de0c3f337269eb4bdc834e5d84c69c2f *vignettes/MAGEE.Rnw
+e77782adc4145a04eedafeba232bff66 *vignettes/MAGEE.Rnw
