@@ -1,12 +1,13 @@
 Package: MAGEE
 Type: Package
-Version: 1.0.2
-Date: 2022-01-27
+Version: 1.1.0
+Date: 2022-03-27
 Title: Mixed Model Association Test for GEne-Environment Interaction
 Authors@R: c(person("Xinyu", "Wang", role = "aut", email = "xinyu.wang@uth.tmc.edu"),
              person("Han", "Chen", role = c("aut", "cre"), email = "han.chen.2@uth.tmc.edu"),
              person("Duy", "Pham", role = "aut", email = "duy.t.pham@uth.tmc.edu"),
-             person("Kenneth", "Westerman", role = "aut", email = "KEWESTERMAN@mgh.harvard.edu"))
+             person("Kenneth", "Westerman", role = "aut", email = "KEWESTERMAN@mgh.harvard.edu"),
+             person("Cong", "Pan", role="aut", email = "cong.pan2uth.tmc.edu"))
 Description: Use a 'glmmkin' class object (GMMAT package) from the null model to perform generalized linear mixed model-based single-variant and variant set main effect tests, gene-environment interaction tests, and joint tests for association, as proposed in Wang et al. (2020) <DOI:10.1002/gepi.22351>.
 License: GPL-3
 Copyright: See COPYRIGHTS for details.
@@ -18,11 +19,12 @@ Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.2.0)
 NeedsCompilation: yes
-Packaged: 2022-01-27 06:09:37 UTC; hchen
+Packaged: 2022-03-31 15:28:12 UTC; cpan
 Author: Xinyu Wang [aut],
   Han Chen [aut, cre],
   Duy Pham [aut],
-  Kenneth Westerman [aut]
+  Kenneth Westerman [aut],
+  Cong Pan [aut]
 Maintainer: Han Chen <han.chen.2@uth.tmc.edu>
 Repository: CRAN
-Date/Publication: 2022-01-27 12:20:02 UTC
+Date/Publication: 2022-03-31 22:40:10 UTC
