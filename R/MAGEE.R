@@ -1052,7 +1052,7 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
 .Q_pval <- function(Q, lambda, method = "davies") {
   if(method == "davies") {
     tmp <- try(suppressWarnings(CompQuadForm::davies(q = Q, lambda = lambda, acc = 1e-6)))
-    if(class(tmp) == "try-error" || tmp$ifault > 0 || tmp$Qq <= 1e-5 || tmp$Qq >= 1) method <- "kuonen"
+    if(inherits(tmp, "try-error") || tmp$ifault > 0 || tmp$Qq <= 1e-5 || tmp$Qq >= 1) method <- "kuonen"
     else return(tmp$Qq)
   }
   if(method == "kuonen") {

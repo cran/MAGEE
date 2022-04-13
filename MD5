@@ -1,15 +1,15 @@
-0ffd5d0ffd434ba414fcd2caae8528af *DESCRIPTION
+2f545e438df93f89831176ec2493dfc3 *DESCRIPTION
 29c827dcaa8f81848eeedd2a2dcd5e63 *NAMESPACE
-20f40e3092a35839eac3c15a1de399ff *R/MAGEE.R
+d5b0fe6c312fbbddffab60e92b68197a *R/MAGEE.R
 ef0d5d913723d55ab0719e2ad0a585e1 *R/glmm.gei.R
-1e1538c1f54c910ec2fa74030a879390 *README.md
+324630f5ff5de508d720510a87cf8eb7 *README.md
 e43f35746a8b02134e8ecbb0cf1558fa *build/vignette.rds
 ddce269a1e3d054cae349621c198dd52 *data/datalist
 203af5bf589642fee477911c3868b29c *data/example.rda
 62848992094176845b79312bc026249e *inst/COPYRIGHTS
 c859b5366263ac42c4a7b4b5371bf50a *inst/doc/MAGEE.R
-9e09e9c05b09d3573ba9919cc40fb9d1 *inst/doc/MAGEE.Rnw
-b84e2242a656213cc53389e08e4f69ce *inst/doc/MAGEE.pdf
+4392abb61e881e1a35424632349216ec *inst/doc/MAGEE.Rnw
+73e85c047983f77820b783ad5cf1d84e *inst/doc/MAGEE.pdf
 f7954989664703c2355f0b0d71c94bb7 *inst/extdata/GRM.txt.bz2
 c0284b1683014cf1e5216d54841137d0 *inst/extdata/SetID.singlevariant.txt
 f6cecfdbec46d056fb54dad6ff9ec63d *inst/extdata/SetID.withweights.txt
@@ -25,7 +25,7 @@ f02f2f6484e4278c0bf6094e47b24ad9 *man/example.Rd
 699294da801ea4881cc6fe89d6ec8839 *man/glmm.gei.Rd
 efeccc837a62ea758c4f6dd72cd1c1dd *src/Makevars
 efeccc837a62ea758c4f6dd72cd1c1dd *src/Makevars.win
-2785e1269488a3af24127ac2779bb270 *src/fitglmm.cpp
+54bf9adf8cef0f03bce2a8bd76e14857 *src/fitglmm.cpp
 c2c11bb7956781e5c4111f6235189846 *src/fitmagee.cpp
 7b6977026437092191e9da699ed9f780 *src/libdeflate-1.7/COPYING
 bb7bfe7601828c1d33ce5559ba8ef420 *src/libdeflate-1.7/NEWS
@@ -115,5 +115,5 @@ d29ff277a84d8d62c76217d9d6251a45 *src/zstd-1.4.5/lib/decompress/zstd_decompress_
 e7e5ea5ce30e89e736f933f856a05e55 *src/zstd-1.4.5/lib/zstd.h
 cc9f66fdc92816912784b1bcf7b05bc6 *tests/testthat.R
 9249dda7b82aa2832ab17fa20e06a473 *tests/testthat/test_MAGEE.R
-ff3a1a83796d0e3e2a619c6fc0f803d5 *tests/testthat/test_glmm.gei.R
-9e09e9c05b09d3573ba9919cc40fb9d1 *vignettes/MAGEE.Rnw
+4527ec024ee33069732063ba86624ecb *tests/testthat/test_glmm.gei.R
+4392abb61e881e1a35424632349216ec *vignettes/MAGEE.Rnw
