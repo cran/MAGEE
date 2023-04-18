@@ -6,7 +6,7 @@
 ## ## try http:// if https:// URLs are not supported
 ## ## remove "doMC" below if you are running Windows
 ## install.packages(c("devtools", "RcppArmadillo", "CompQuadForm", "doMC", 
-##         "foreach", "Matrix", "GMMAT", "BiocManager", "testthat"), 
+##         "foreach", "Matrix", "GMMAT", "BiocManager", "testthat", "data.table"), 
 ## 	repos = "https://cran.r-project.org/")
 ## BiocManager::install(c("SeqArray", "SeqVarTools"))
 ## devtools::install_github("https://github.com/large-scale-gxe-methods/MAGEE")
@@ -90,7 +90,8 @@
 ## geno.file <- system.file("extdata", "geno.gds", package = "MAGEE")
 ## group.file <- system.file("extdata", "SetID.withweights.txt", 
 ##                           package = "MAGEE")
-## MAGEE.meta(meta.files.prefix = "MAGEE.meta",  
+## meta.files.prefix <- tempfile()
+## MAGEE.meta(meta.files.prefix = meta.files.prefix,  
 ##                    group.file=group.file,
 ##                     tests=c("JV", "JF", "JD"))
 

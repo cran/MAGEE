@@ -1,6 +1,6 @@
-MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep = "\t", bgen.samplefile = NULL, interaction.covariates = NULL, meta.file.prefix = NULL, MAF.range = c(1e-7, 0.5), MAF.weights.beta = c(1, 25), miss.cutoff = 1, missing.method = "impute2mean", method = "davies", tests = "JF", use.minor.allele = FALSE, auto.flip = FALSE, Garbage.Collection = FALSE, is.dosage = FALSE, ncores = 1){
+MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep = "\t", bgen.samplefile = NULL, interaction.covariates = NULL, meta.file.prefix = NULL, MAF.range = c(1e-7, 0.5), AF.strata.range = c(0, 1), MAF.weights.beta = c(1, 25), miss.cutoff = 1, missing.method = "impute2mean", method = "davies", tests = "JF", use.minor.allele = FALSE, auto.flip = FALSE, Garbage.Collection = FALSE, is.dosage = FALSE, ncores = 1){
   if(Sys.info()["sysname"] == "Windows" && ncores > 1) {
-    warning("The package doMC is not available on Windows... Switching to single thread...")
+    warning("The package doMC is not available on Windows... Switching to single thread...", call. = FALSE)
     ncores <- 1
   }
   if(!grepl("\\.gds$|\\.bgen$", geno.file[1])) stop("Error: only .gds and .bgen format is supported in geno.file!")
@@ -49,7 +49,7 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
       gds <- geno.file
     }
     sample.id <- SeqArray::seqGetData(gds, "sample.id")
-    if(any(is.na(match(null.obj$id_include, sample.id)))) warning("Check your data... Some individuals in null.obj$id_include are missing in sample.id of geno.file!")
+    if(any(is.na(match(null.obj$id_include, sample.id)))) warning("Check your data... Some individuals in null.obj$id_include are missing in sample.id of geno.file!", call. = FALSE)
     sample.id <- sample.id[sample.id %in% null.obj$id_include]
     if(length(sample.id) == 0) stop("Error: null.obj$id_include does not match sample.id in geno.file!")
     if(any(duplicated(null.obj$id_include))) {
@@ -86,7 +86,7 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
     }
     variant.id <- paste(chr, pos, ref, alt, sep = ":")
     rm(chr, pos, ref, alt); gc()
-    group.info <- try(read.table(group.file, header = FALSE, col.names = c("group", "chr", "pos", "ref", "alt", "weight"), colClasses = c("character","character","integer","character","character","numeric"), sep = group.file.sep), silent = TRUE)
+    group.info <- try(fread(group.file, header = FALSE, data.table = FALSE, col.names = c("group", "chr", "pos", "ref", "alt", "weight"), colClasses = c("character","character","integer","character","character","numeric"), sep = group.file.sep), silent = TRUE)
     if (inherits(group.info, "try-error")) {
       stop("Error: cannot read group.file!")
     }
@@ -99,14 +99,14 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
     group.info$variant.idx <- variant.idx1
     group.info$flip <- 0
     if(auto.flip) {
-      cat("Automatic allele flipping enabled...\nVariants matching alt/ref but not ref/alt alleles will also be included, with flipped effects\n")
+      message("Automatic allele flipping enabled...\nVariants matching alt/ref but not ref/alt alleles will also be included, with flipped effects")
       variant.id2 <- paste(group.info$chr, group.info$pos, group.info$alt, group.info$ref, sep = ":")
       variant.idx2 <- variant.idx[match(variant.id2, variant.id)]
       if(any(!is.na(variant.idx1) & !is.na(variant.idx2))) {
         tmp.dups <- which(!is.na(variant.idx1) & !is.na(variant.idx2))
-        cat("The following ambiguous variants were found:\n")
-        cat("variant:", variant.id1[tmp.dups], "\n") 
-        cat("Warning: both variants with alleles ref/alt and alt/ref were present at the same position and coding should be double checked!\nFor these variants, only those with alleles ref/alt were used in the analysis...\n")
+        message("The following ambiguous variants were found:")
+        message(paste(variant.id1[tmp.dups], collapse = ", "))
+        warning("Both variants with alleles ref/alt and alt/ref were present at the same position and coding should be double checked!\nFor these variants, only those with alleles ref/alt were used in the analysis...", call. = FALSE)
         variant.idx2[tmp.dups] <- NA
         rm(tmp.dups)
       }
@@ -176,7 +176,7 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
           if(!is.null(strata)) { # E is not continuous
             freq.tmp <- sapply(strata.list, function(x) colMeans(geno[x, , drop = FALSE], na.rm = TRUE)/2) # freq.tmp is a matrix, each column is a strata, and each row is a varirant 
             if (length(dim(freq.tmp)) == 2) freq_strata <- apply(freq.tmp, 1, range) else freq_strata <- as.matrix(range(freq.tmp)) # freq_strata is the range of allele freq across strata.list
-            include <- include & !is.na(freq_strata[1,]) & !is.na(freq_strata[2,]) & freq_strata[1,] >= MAF.range[1] & freq_strata[2,] <= 1-MAF.range[1]
+            include <- include & !is.na(freq_strata[1,]) & !is.na(freq_strata[2,]) & freq_strata[1,] >= AF.strata.range[1] & freq_strata[2,] <= AF.strata.range[2]
             rm(freq.tmp)
           }
           n.p <- sum(include)
@@ -385,7 +385,7 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
         if(!is.null(strata)) { # E is not continuous
           freq.tmp <- sapply(strata.list, function(x) colMeans(geno[x, , drop = FALSE], na.rm = TRUE)/2) # freq.tmp is a matrix, each column is a strata, and each row is a varirant 
           if (length(dim(freq.tmp)) == 2) freq_strata <- apply(freq.tmp, 1, range) else freq_strata <- as.matrix(range(freq.tmp)) # freq_strata is the range of allele freq across strata.list
-          include <- include & !is.na(freq_strata[1,]) & !is.na(freq_strata[2,]) & freq_strata[1,] >= MAF.range[1] & freq_strata[2,] <= 1-MAF.range[1]
+          include <- include & !is.na(freq_strata[1,]) & !is.na(freq_strata[2,]) & freq_strata[1,] >= AF.strata.range[1] & freq_strata[2,] <= AF.strata.range[2]
           rm(freq.tmp)
         }
         n.p <- sum(include)
@@ -551,15 +551,15 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
       if (is.null(bgen.samplefile)) {
         stop("Error: bgen file does not contain sample identifiers. A .sample file (bgen.samplefile) is needed.")
       }
-      sample.id <- read.table(bgen.samplefile, header = TRUE, sep = " ")
+      sample.id <- fread(bgen.samplefile, header = TRUE, data.table = FALSE)
       if ((nrow(sample.id)-1) != bgenInfo$N){
         stop(paste0("Error: Number of sample identifiers in BGEN sample file (", nrow(sample.id)-1, ") does not match number of samples in BGEN file (", bgenInfo$N,")."))
       }
-      sample.id <- sample.id[-1, 1]
+      sample.id <- sample.id[-1, 2]
     } else {
       sample.id <- bgenInfo$SampleIds
     }
-    if(any(is.na(match(null.obj$id_include, sample.id)))) warning("Check your data... Some individuals in null.obj$id_include are missing in sample.id of bgen sample file!")
+    if(any(is.na(match(null.obj$id_include, sample.id)))) warning("Check your data... Some individuals in null.obj$id_include are missing in sample.id of bgen sample file!", call. = FALSE)
     select <- match(sample.id, unique(null.obj$id_include))
     select[is.na(select)] <- 0
     sample.id <- sample.id[sample.id %in% null.obj$id_include]
@@ -594,7 +594,7 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
     variant.id <- paste(bgenVariant$VariantInfo$CHR, bgenVariant$VariantInfo$POS, bgenVariant$VariantInfo$A1, bgenVariant$VariantInfo$A2, sep = ":")
     gc()
     variant.idx <- 1:length(variant.id)
-    group.info <- try(read.table(group.file, header = FALSE, col.names = c("group", "chr", "pos", "ref", "alt", "weight"), colClasses = c("character","character","integer","character","character","numeric"), sep = group.file.sep), silent = TRUE)
+    group.info <- try(fread(group.file, header = FALSE, data.table = FALSE, col.names = c("group", "chr", "pos", "ref", "alt", "weight"), colClasses = c("character","character","integer","character","character","numeric"), sep = group.file.sep), silent = TRUE)
     if (inherits(group.info, "try-error")) {
       stop("Error: cannot read group.file!")
     }
@@ -604,14 +604,14 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
     group.info$variant.idx <- variant.idx1
     group.info$flip <- 0
     if(auto.flip) {
-      cat("Automatic allele flipping enabled...\nVariants matching alt/ref but not ref/alt alleles will also be included, with flipped effects\n")
+      message("Automatic allele flipping enabled...\nVariants matching alt/ref but not ref/alt alleles will also be included, with flipped effects")
       variant.id2 <- paste(group.info$chr, group.info$pos, group.info$alt, group.info$ref, sep = ":")
       variant.idx2 <- variant.idx[match(variant.id2, variant.id)]
       if(any(!is.na(variant.idx1) & !is.na(variant.idx2))) {
         tmp.dups <- which(!is.na(variant.idx1) & !is.na(variant.idx2))
-        cat("The following ambiguous variants were found:\n")
-        cat("variant:", variant.id1[tmp.dups], "\n")
-        cat("Warning: both variants with alleles ref/alt and alt/ref were present at the same position and coding should be double checked!\nFor these variants, only those with alleles ref/alt were used in the analysis...\n")
+        message("The following ambiguous variants were found:")
+        message(paste(variant.id1[tmp.dups], collapse = ", "))
+        warning("Both variants with alleles ref/alt and alt/ref were present at the same position and coding should be double checked!\nFor these variants, only those with alleles ref/alt were used in the analysis...", call. = FALSE)
         variant.idx2[tmp.dups] <- NA
         rm(tmp.dups)
       }
@@ -629,8 +629,8 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
     group.idx.end <- findInterval(1:n.groups.all, group.info$group.idx)
     group.idx.start <- c(1, group.idx.end[-n.groups.all] + 1)
     if (ncores > n.groups.all) {
+      warning("Number of cores (", ncores, ") is greater than number of groups (", n.groups.all, "). Using ", n.groups.all, " instead.", call. = FALSE)
       ncores <- n.groups.all
-      print(paste0("Warning: number of cores (", ncores,") is greater than number of groups (", n.groups.all,"). Using ", ncores, " instead."))
     }
     ncores <- min(c(ncores, parallel::detectCores(logical = TRUE)))
     if(ncores > 1) {
@@ -683,7 +683,7 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
           if(!is.null(strata)) { # E is not continuous
             freq.tmp <- sapply(strata.list, function(x) colMeans(geno[x, , drop = FALSE], na.rm = TRUE)/2) # freq.tmp is a matrix, each column is a strata, and each row is a varirant 
             if (length(dim(freq.tmp)) == 2) freq_strata <- apply(freq.tmp, 1, range) else freq_strata <- as.matrix(range(freq.tmp)) # freq_strata is the range of allele freq across strata.list
-            include <- include & !is.na(freq_strata[1,]) & !is.na(freq_strata[2,]) & freq_strata[1,] >= MAF.range[1] & freq_strata[2,] <= 1-MAF.range[1]
+            include <- include & !is.na(freq_strata[1,]) & !is.na(freq_strata[2,]) & freq_strata[1,] >= AF.strata.range[1] & freq_strata[2,] <= AF.strata.range[2]
             rm(freq.tmp)
           }
           n.p <- sum(include)
@@ -886,7 +886,7 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
         if(!is.null(strata)) { # E is not continuous
           freq.tmp <- sapply(strata.list, function(x) colMeans(geno[x, , drop = FALSE], na.rm = TRUE)/2) # freq.tmp is a matrix, each column is a strata, and each row is a varirant 
           if (length(dim(freq.tmp)) == 2) freq_strata <- apply(freq.tmp, 1, range) else freq_strata <- as.matrix(range(freq.tmp)) # freq_strata is the range of allele freq across strata.list
-          include <- include & !is.na(freq_strata[1,]) & !is.na(freq_strata[2,]) & freq_strata[1,] >= MAF.range[1] & freq_strata[2,] <= 1-MAF.range[1]
+          include <- include & !is.na(freq_strata[1,]) & !is.na(freq_strata[2,]) & freq_strata[1,] >= AF.strata.range[1] & freq_strata[2,] <= AF.strata.range[2]
           rm(freq.tmp)
         }
         n.p <- sum(include)
@@ -1062,7 +1062,7 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
   }
   if(method == "liu") {
     pval <- try(CompQuadForm::liu(q = Q, lambda = lambda))
-    if(inherits(pval, "try-error")) cat("Warning: method \"liu\" failed...\nQ:", Q, "\nlambda:", lambda, "\n")
+    if(inherits(pval, "try-error")) warning("Method \"liu\" failed...\nQ: ", Q, "\nlambda: ", paste(lambda, collapse = ", "), call. = FALSE)
     else return(pval)
   }
   return(NA)
@@ -1173,7 +1173,7 @@ MAGEE.prep <- function(null.obj, interaction, geno.file, group.file, interaction
   }
   
   sample.id <- SeqArray::seqGetData(gds, "sample.id")
-  if(any(is.na(match(null.obj$id_include, sample.id)))) warning("Check your data... Some individuals in null.obj$id_include are missing in sample.id of geno.file!")
+  if(any(is.na(match(null.obj$id_include, sample.id)))) warning("Check your data... Some individuals in null.obj$id_include are missing in sample.id of geno.file!", call. = FALSE)
   sample.id <- sample.id[sample.id %in% null.obj$id_include]
   if(length(sample.id) == 0) stop("Error: null.obj$id_include does not match sample.id in geno.file!")
   if(any(duplicated(null.obj$id_include))) {
@@ -1217,7 +1217,7 @@ MAGEE.prep <- function(null.obj, interaction, geno.file, group.file, interaction
   }
   variant.id <- paste(chr, pos, ref, alt, sep = ":")
   rm(chr, pos, ref, alt); gc()
-  group.info <- try(read.table(group.file, header = FALSE, col.names = c("group", "chr", "pos", "ref", "alt", "weight"), colClasses = c("character","character","integer","character","character","numeric"), sep = group.file.sep), silent = TRUE)
+  group.info <- try(fread(group.file, header = FALSE, data.table = FALSE, col.names = c("group", "chr", "pos", "ref", "alt", "weight"), colClasses = c("character","character","integer","character","character","numeric"), sep = group.file.sep), silent = TRUE)
   if (inherits(group.info, "try-error")) {
     stop("Error: cannot read group.file!")
   }
@@ -1230,14 +1230,14 @@ MAGEE.prep <- function(null.obj, interaction, geno.file, group.file, interaction
   group.info$variant.idx <- variant.idx1
   group.info$flip <- 0
   if(auto.flip) {
-    cat("Automatic allele flipping enabled...\nVariants matching alt/ref but not ref/alt alleles will also be included, with flipped effects\n")
+    message("Automatic allele flipping enabled...\nVariants matching alt/ref but not ref/alt alleles will also be included, with flipped effects")
     variant.id2 <- paste(group.info$chr, group.info$pos, group.info$alt, group.info$ref, sep = ":")
     variant.idx2 <- variant.idx[match(variant.id2, variant.id)]
     if(any(!is.na(variant.idx1) & !is.na(variant.idx2))) {
       tmp.dups <- which(!is.na(variant.idx1) & !is.na(variant.idx2))
-      cat("The following ambiguous variants were found:\n")
-      cat("variant:", variant.id1[tmp.dups], "\n") 
-      cat("Warning: both variants with alleles ref/alt and alt/ref were present at the same position and coding should be double checked!\nFor these variants, only those with alleles ref/alt were used in the analysis...\n")
+      message("The following ambiguous variants were found:")
+      message(paste(variant.id1[tmp.dups], collapse = ", ")) 
+      warning("Both variants with alleles ref/alt and alt/ref were present at the same position and coding should be double checked!\nFor these variants, only those with alleles ref/alt were used in the analysis...", call. = FALSE)
       variant.idx2[tmp.dups] <- NA
       rm(tmp.dups)
     }
@@ -1258,12 +1258,12 @@ MAGEE.prep <- function(null.obj, interaction, geno.file, group.file, interaction
   return(out)
 }
 
-MAGEE.lowmem <- function(MAGEE.prep.obj, geno.file = NULL, meta.file.prefix = NULL, MAF.range = c(1e-7, 0.5), MAF.weights.beta = c(1, 25), miss.cutoff = 1, missing.method = "impute2mean", method = "davies", tests = "JF", use.minor.allele = FALSE, Garbage.Collection = FALSE, is.dosage = FALSE, ncores = 1)
+MAGEE.lowmem <- function(MAGEE.prep.obj, geno.file = NULL, meta.file.prefix = NULL, MAF.range = c(1e-7, 0.5), AF.strata.range = c(0, 1), MAF.weights.beta = c(1, 25), miss.cutoff = 1, missing.method = "impute2mean", method = "davies", tests = "JF", use.minor.allele = FALSE, Garbage.Collection = FALSE, is.dosage = FALSE, ncores = 1)
 {
   if(!inherits(MAGEE.prep.obj, "MAGEE.prep")) stop("Error: MAGEE.prep.obj must be a class MAGEE.prep object!")
   is.Windows <- Sys.info()["sysname"] == "Windows"
   if(is.Windows && ncores > 1) {
-    warning("The package doMC is not available on Windows... Switching to single thread...")
+    warning("The package doMC is not available on Windows... Switching to single thread...", call. = FALSE)
     ncores <- 1
   }
   null.obj <- MAGEE.prep.obj$null.obj
@@ -1354,7 +1354,7 @@ MAGEE.lowmem <- function(MAGEE.prep.obj, geno.file = NULL, meta.file.prefix = NU
 	if(!is.null(strata)) { # E is not continuous
           freq.tmp <- sapply(strata.list, function(x) colMeans(geno[x, , drop = FALSE], na.rm = TRUE)/2) # freq.tmp is a matrix, each column is a strata, and each row is a varirant 
           if (length(dim(freq.tmp)) == 2) freq_strata <- apply(freq.tmp, 1, range) else freq_strata <- as.matrix(range(freq.tmp)) # freq_strata is the range of allele freq across strata.list
-          include <- include & !is.na(freq_strata[1,]) & !is.na(freq_strata[2,]) & freq_strata[1,] >= MAF.range[1] & freq_strata[2,] <= 1-MAF.range[1]
+          include <- include & !is.na(freq_strata[1,]) & !is.na(freq_strata[2,]) & freq_strata[1,] >= AF.strata.range[1] & freq_strata[2,] <= AF.strata.range[2]
           rm(freq.tmp)
         }
         n.p <- sum(include)
@@ -1557,7 +1557,7 @@ MAGEE.lowmem <- function(MAGEE.prep.obj, geno.file = NULL, meta.file.prefix = NU
       if(!is.null(strata)) { # E is not continuous
         freq.tmp <- sapply(strata.list, function(x) colMeans(geno[x, , drop = FALSE], na.rm = TRUE)/2) # freq.tmp is a matrix, each column is a strata, and each row is a varirant 
         if (length(dim(freq.tmp)) == 2) freq_strata <- apply(freq.tmp, 1, range) else freq_strata <- as.matrix(range(freq.tmp)) # freq_strata is the range of allele freq across strata.list
-        include <- include & !is.na(freq_strata[1,]) & !is.na(freq_strata[2,]) & freq_strata[1,] >= MAF.range[1] & freq_strata[2,] <= 1-MAF.range[1]
+        include <- include & !is.na(freq_strata[1,]) & !is.na(freq_strata[2,]) & freq_strata[1,] >= AF.strata.range[1] & freq_strata[2,] <= AF.strata.range[2]
         rm(freq.tmp)
       }
       n.p <- sum(include)

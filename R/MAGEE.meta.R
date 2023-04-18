@@ -16,7 +16,7 @@ MAGEE.meta <- function(meta.files.prefix, n.files = rep(1, length(meta.files.pre
   JV <- "JV" %in% tests
   JF <- "JF" %in% tests
   JD <- "JD" %in% tests
-  group.info <- try(read.table(group.file, header = FALSE, col.names = c("group", "chr", "pos", "ref", "alt", "weight"), colClasses = c("character","character","integer","character","character","numeric"), sep = group.file.sep), silent = TRUE)
+  group.info <- try(fread(group.file, header = FALSE, data.table = FALSE, col.names = c("group", "chr", "pos", "ref", "alt", "weight"), colClasses = c("character","character","integer","character","character","numeric"), sep = group.file.sep), silent = TRUE)
   if (inherits(group.info, "try-error")) {
     stop("Error: cannot read group.file!")
   }
@@ -32,7 +32,7 @@ MAGEE.meta <- function(meta.files.prefix, n.files = rep(1, length(meta.files.pre
   for(i in 1:n.cohort) { # Read the scores for each study from each core
     tmp.scores <- NULL
     for(j in 1:n.files[i]) { # n.files[i] is the number of cores for the i-th study
-      tmp <- try(read.table(paste0(meta.files.prefix[i], ".score.", j), header = TRUE, as.is = TRUE))
+      tmp <- try(fread(paste0(meta.files.prefix[i], ".score.", j), header = TRUE, data.table = FALSE))
       if (inherits(tmp,"try-error")) {
         stop(paste0("Error: cannot read ", meta.files.prefix[i], ".score.", j, "!"))
       }
@@ -40,12 +40,12 @@ MAGEE.meta <- function(meta.files.prefix, n.files = rep(1, length(meta.files.pre
       tmp$idx <- match(paste(tmp$group, tmp$chr, tmp$pos, tmp$ref, tmp$alt, sep = ":"), variant.id) # find the index of the variants from the score file in the group file
       if(any(is.na(tmp$idx))) { # if any variant from the score file is not in the group file, report error and stop the job
         tmp.dups <- which(is.na(tmp$idx))
-        cat("In", paste0(meta.files.prefix[i], ".score.", j), ", the following variants were not present in group.file:\n")
-        cat("group:", tmp$group[tmp.dups], "\n")
-        cat("chr:", tmp$chr[tmp.dups], "\n")
-        cat("pos:", tmp$pos[tmp.dups], "\n")
-        cat("ref:", tmp$ref[tmp.dups], "\n")
-        cat("alt:", tmp$alt[tmp.dups], "\n")
+        message("In ", paste0(meta.files.prefix[i], ".score.", j), ", the following variants were not present in group.file:")
+        message("group: ", paste(tmp$group[tmp.dups], collapse = ", "))
+        message("chr: ", paste(tmp$chr[tmp.dups], collapse = ", "))
+        message("pos: ", paste(tmp$pos[tmp.dups], collapse = ", "))
+        message("ref: ", paste(tmp$ref[tmp.dups], collapse = ", "))
+        message("alt: ", paste(tmp$alt[tmp.dups], collapse = ", "))
         stop("Error: meta files possibly not generated using this group.file!")
       }
       tmp$file <- j
@@ -53,7 +53,7 @@ MAGEE.meta <- function(meta.files.prefix, n.files = rep(1, length(meta.files.pre
       rm(tmp)
     }
     if(any(sort(tmp.scores$idx)!=tmp.scores$idx)) { # for the same study, the score file from each core has to be from MAGEE() analysis using the same group file, the order of variants can't be mixed 
-      cat("In some", meta.files.prefix[i], "score files, the order of group and variants is not the same as in the group-sorted group.file.\n") # meta.files.prefix[i] shows which study has problem
+      message("In some ", paste(meta.files.prefix[i], collapse = ", "), " score files, the order of group and variants is not the same as in the group-sorted group.file.") # meta.files.prefix[i] shows which study has problem
       stop("Error: meta files possibly not generated using this group.file!")
     }
     group.idx.ends[[i]] <- findInterval(1:n.groups, group.info$group.idx[tmp.scores$idx]) # for different studies, the score files may have diffferent variants (some variants may be removed for some study in MAGEE() analysis)
@@ -88,7 +88,7 @@ MAGEE.meta <- function(meta.files.prefix, n.files = rep(1, length(meta.files.pre
           n.E <- readBin(cons[[j]], what = "numeric", n = 1, size = 4) # There are n.E and interaction at the beginning for every binary file from different cores
           interaction <- readBin(cons[[j]], what = "character", n = n.E, size = 4)
         } else if(any(U.list[[j]]$file!=current.cons[j])) {
-          cat("For test group", i, ", cohort", j, "has incorrect indices for binary var files.\n")
+          message("For test group ", i, ", cohort ", j, "has incorrect indices for binary var files.")
           stop("Error: check your individual score files!")
         } else if (s.count[j] == 1) { # Read n.E and interaction only from the first group
           n.E <- readBin(cons[[j]], what = "numeric", n = 1, size = 4)

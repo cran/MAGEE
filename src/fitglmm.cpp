@@ -1,5 +1,5 @@
 /*  MAGEE : An R Package for Mixed Model Association Test for GEne-Environment Interaction
- *  Copyright (C) 2020  Xinyu Wang, Han Chen
+ *  Copyright (C) 2020--2023  Xinyu Wang, Han Chen, Duy T. Pham
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,27 +16,6 @@
  */
 
 
-/*
- *  R : A Computer Language for Statistical Data Analysis
- *  Copyright (C) 1995, 1996  Robert Gentleman and Ross Ihaka
- *  Copyright (C) 2003-2004  The R Foundation
- *  Copyright (C) 1998--2013  The R Core Team
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, a copy is available at
- *  http://www.r-project.org/Licenses/
- */
-
 #define ARMA_DONT_PRINT_ERRORS
 #include <fstream>
 #include <cmath>
@@ -50,8 +29,8 @@
 #include <Rmath.h>
 #include <Rcpp.h>
 #include "read_bgen.h"
-#include "zstd-1.4.5/lib/zstd.h"
-#include "libdeflate-1.7/libdeflate.h"
+#include "zstd/lib/zstd.h"
+#include "libdeflate/libdeflate.h"
 using namespace std;
 using namespace arma;
 using namespace Rcpp;
@@ -61,8 +40,9 @@ typedef unsigned int uint;
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 
+#ifndef DBL_EPSILON
 #define DBL_EPSILON 2.2204460492503131e-16;
-
+#endif
 
 extern "C" 
 {
