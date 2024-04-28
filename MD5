@@ -1,4 +1,4 @@
-f85b5e4d551518f0a6cf19ea01f0d5d6 *DESCRIPTION
+a1d6782cc02532792b28f2f036202c70 *DESCRIPTION
 2f8278ae75f1c00e6785b98670a92249 *LICENSE.note
 03835b23ff5dcc5d20b3dcda19195756 *NAMESPACE
 01ac23342e7df04c8ed7a706e5044dc4 *R/MAGEE.R
@@ -14,8 +14,8 @@ ddce269a1e3d054cae349621c198dd52 *data/datalist
 ec519dadbc1dc88becf5429344e9f2a2 *data/example.rda
 faf98465c70fe4e224671ccdd414755a *inst/COPYRIGHTS
 ddc08170a71f0a6c5a5bdebcbadeb015 *inst/doc/MAGEE.R
-9d0ba151ebd5c0a55be4bf9dac35530c *inst/doc/MAGEE.Rnw
-616c35d4b45122289fd1115c94126235 *inst/doc/MAGEE.pdf
+adcf72888022339f87b3b2531a8fc15f *inst/doc/MAGEE.Rnw
+29492d678726f1623244a50843bf8a0e *inst/doc/MAGEE.pdf
 f7954989664703c2355f0b0d71c94bb7 *inst/extdata/GRM.txt.bz2
 c0284b1683014cf1e5216d54841137d0 *inst/extdata/SetID.singlevariant.txt
 f6cecfdbec46d056fb54dad6ff9ec63d *inst/extdata/SetID.withweights.txt
@@ -30,7 +30,7 @@ caedea2c5efb4a0a78bd94a103799028 *inst/extdata/meta4.txt
 b6906ba2c3b88fb25ebe8c4492fb034e *inst/extdata/pheno.txt
 ed1a63ea04ec6b639d1fa5013362988e *inst/extdata/pheno2.txt
 0ccde37e26c7b3319919db989bb28b84 *inst/extdata/readme
-5b762981feac427a216dc6ab95ac9be8 *man/MAGEE-package.Rd
+0a946599f173bf7ff3423698754bbc63 *man/MAGEE-package.Rd
 b2e83e33fd873aeb29859bcb388dfa66 *man/MAGEE.Rd
 03e277c799e706d40ba420d414d266c6 *man/MAGEE.meta.Rd
 f02f2f6484e4278c0bf6094e47b24ad9 *man/example.Rd
@@ -38,8 +38,8 @@ b1096572b492f2184c1f97ccefc97849 *man/glmm.gei.Rd
 2ecc787c2ff1c3b2820d358df17e77f1 *man/glmm.gei.meta.Rd
 c443fc278189700f6482982c09344374 *src/Makevars.in
 5ca4affb76349de47f87c842f77b2563 *src/Makevars.win
-e248fcf2dff204e2023757e8cfbb8b3a *src/fitglmm.cpp
-c0081abe242a29d2b726bcf22300f97b *src/fitmagee.cpp
+6352cd31d0e4cd9f151a49074fd2a78d *src/fitglmm.cpp
+87f0263b02eaebb60926b617b45bd356 *src/fitmagee.cpp
 cf1345cdcfc4993d3f0d2e20f38369b7 *src/libdeflate.files
 7b6977026437092191e9da699ed9f780 *src/libdeflate/COPYING
 08222f563e4fec8df504ca80626d6b7b *src/libdeflate/NEWS.md
@@ -85,7 +85,7 @@ b7d77b9b3be7bdae28eaf2b2c561e95e *src/libdeflate/lib/zlib_constants.h
 13964ab294953ba0d9b60a5aa32b9fd3 *src/libdeflate/libdeflate.h
 f343a1d8945d83fcd7c14d786084e62b *src/read_bgen.cpp
 26050bf9cc34e0ba618441dcbffaa48f *src/read_bgen.h
-b0ba3c8dd8def91152cb20409ae92961 *src/registerDynamicSymbol.c
+8089e645ff2c25cb41cad148e407da11 *src/registerDynamicSymbol.c
 7757b59e9f0764b0e42ca36d34517723 *src/zstd.files
 7030049247913a22da84f83d42c82106 *src/zstd/CHANGELOG
 4723ca4fce7558d7003e1063125f9cda *src/zstd/CMakeLists.txt
@@ -143,4 +143,4 @@ e89707e37b0316ed0b9aa97c14d542a7 *tests/testthat/test_MAGEE.R
 e4fa2d4faeae1a075661623ecf390314 *tests/testthat/test_MAGEE.meta.R
 e64f20150ed0a72cd7c3b74f7ccb55bf *tests/testthat/test_glmm.gei.R
 ffdd6f9e6df86354e886bda427ed6d0a *tests/testthat/test_glmm.gei.meta.R
-9d0ba151ebd5c0a55be4bf9dac35530c *vignettes/MAGEE.Rnw
+adcf72888022339f87b3b2531a8fc15f *vignettes/MAGEE.Rnw
