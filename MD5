@@ -1,9 +1,9 @@
-a1d6782cc02532792b28f2f036202c70 *DESCRIPTION
+8bfa754b1d98fc79589bf0fb56b98214 *DESCRIPTION
 2f8278ae75f1c00e6785b98670a92249 *LICENSE.note
 03835b23ff5dcc5d20b3dcda19195756 *NAMESPACE
 01ac23342e7df04c8ed7a706e5044dc4 *R/MAGEE.R
 3416868426e11a90832e08bf54ac40dd *R/MAGEE.meta.R
-cc25b46c79043cdebdd1cddbe15b73a2 *R/glmm.gei.R
+b9a0828db4efa9860833a3ac71533aed *R/glmm.gei.R
 448f38d07fba020590f4641ec8449048 *R/glmm.gei.meta.R
 4120f169e9401dbfd12b88734567a18a *build/vignette.rds
 98cca6e1be048764b00839ec6aa74617 *cleanup
@@ -14,8 +14,8 @@ ddce269a1e3d054cae349621c198dd52 *data/datalist
 ec519dadbc1dc88becf5429344e9f2a2 *data/example.rda
 faf98465c70fe4e224671ccdd414755a *inst/COPYRIGHTS
 ddc08170a71f0a6c5a5bdebcbadeb015 *inst/doc/MAGEE.R
-adcf72888022339f87b3b2531a8fc15f *inst/doc/MAGEE.Rnw
-29492d678726f1623244a50843bf8a0e *inst/doc/MAGEE.pdf
+eaa4d058d5309d79497115577b3f8e02 *inst/doc/MAGEE.Rnw
+81af0d66e314cb2b0e41a9d506a860c6 *inst/doc/MAGEE.pdf
 f7954989664703c2355f0b0d71c94bb7 *inst/extdata/GRM.txt.bz2
 c0284b1683014cf1e5216d54841137d0 *inst/extdata/SetID.singlevariant.txt
 f6cecfdbec46d056fb54dad6ff9ec63d *inst/extdata/SetID.withweights.txt
@@ -30,11 +30,11 @@ caedea2c5efb4a0a78bd94a103799028 *inst/extdata/meta4.txt
 b6906ba2c3b88fb25ebe8c4492fb034e *inst/extdata/pheno.txt
 ed1a63ea04ec6b639d1fa5013362988e *inst/extdata/pheno2.txt
 0ccde37e26c7b3319919db989bb28b84 *inst/extdata/readme
-0a946599f173bf7ff3423698754bbc63 *man/MAGEE-package.Rd
+9d84bd7f5c48c949166596e33f97b235 *man/MAGEE-package.Rd
 b2e83e33fd873aeb29859bcb388dfa66 *man/MAGEE.Rd
 03e277c799e706d40ba420d414d266c6 *man/MAGEE.meta.Rd
 f02f2f6484e4278c0bf6094e47b24ad9 *man/example.Rd
-b1096572b492f2184c1f97ccefc97849 *man/glmm.gei.Rd
+8bd5d6056375d5ecf1076b4179997414 *man/glmm.gei.Rd
 2ecc787c2ff1c3b2820d358df17e77f1 *man/glmm.gei.meta.Rd
 c443fc278189700f6482982c09344374 *src/Makevars.in
 5ca4affb76349de47f87c842f77b2563 *src/Makevars.win
@@ -143,4 +143,4 @@ e89707e37b0316ed0b9aa97c14d542a7 *tests/testthat/test_MAGEE.R
 e4fa2d4faeae1a075661623ecf390314 *tests/testthat/test_MAGEE.meta.R
 e64f20150ed0a72cd7c3b74f7ccb55bf *tests/testthat/test_glmm.gei.R
 ffdd6f9e6df86354e886bda427ed6d0a *tests/testthat/test_glmm.gei.meta.R
-adcf72888022339f87b3b2531a8fc15f *vignettes/MAGEE.Rnw
+eaa4d058d5309d79497115577b3f8e02 *vignettes/MAGEE.Rnw
